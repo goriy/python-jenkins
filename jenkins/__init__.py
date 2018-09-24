@@ -1355,7 +1355,7 @@ class Jenkins(object):
         else:
             return self._build_url(BUILD_JOB, locals())
 
-    def build_job(self, name, parameters=None, token=None):
+    def build_job(self, name, parameters=None, token=None, files=None):
         '''Trigger build job.
 
         This method returns a queue item number that you can pass to
@@ -1367,10 +1367,11 @@ class Jenkins(object):
         :param name: name of job
         :param parameters: parameters for job, or ``None``, ``dict``
         :param token: Jenkins API token
+        :param files: file parameters for job, or ``None``, ``dict``
         :returns: ``int`` queue item
         '''
         response = self.jenkins_request(requests.Request(
-            'POST', self.build_job_url(name, parameters, token)))
+            'POST', self.build_job_url(name, parameters, token), files=files))
 
         if 'Location' not in response.headers:
             raise EmptyResponseException(
